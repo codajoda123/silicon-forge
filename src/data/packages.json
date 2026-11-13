@@ -1,0 +1,42 @@
+[
+  {
+    "id": "ceramic-dip",
+    "name": "Ceramic DIP",
+    "description": "Reliable and expensive; the default choice for military, industrial and early premium parts.",
+    "maxPins": 40,
+    "maxJunctionTempC": 125,
+    "gVerticalWPerC": 0.00022,
+    "costPerUnit": 4.5,
+    "historicalYear": 1971
+  },
+  {
+    "id": "plastic-dip",
+    "name": "Plastic DIP",
+    "description": "Cheap with worse thermals; acceptable for consumer products.",
+    "maxPins": 40,
+    "maxJunctionTempC": 70,
+    "gVerticalWPerC": 0.0001,
+    "costPerUnit": 0.8,
+    "historicalYear": 1972
+  },
+  {
+    "id": "plcc",
+    "name": "PLCC",
+    "description": "Surface-mount package with more pins, common in the 1980s.",
+    "maxPins": 84,
+    "maxJunctionTempC": 85,
+    "gVerticalWPerC": 0.00016,
+    "costPerUnit": 2.2,
+    "historicalYear": 1982
+  },
+  {
+    "id": "pga",
+    "name": "Pin grid array",
+    "description": "Many pins for wide buses and large address spaces; expensive to assemble.",
+    "maxPins": 168,
+    "maxJunctionTempC": 85,
+    "gVerticalWPerC": 0.0002,
+    "costPerUnit": 7.5,
+    "historicalYear": 1983
+  }
+]

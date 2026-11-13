@@ -1,0 +1,158 @@
+/* ---------- M4 auto-place ---------- */
+
+.autoplace-panel {
+  padding: 14px;
+}
+
+.autoplace-hint {
+  margin: 0 0 10px;
+  font-size: 10.5px;
+  line-height: 1.45;
+  color: var(--ink-soft);
+}
+
+.autoplace-controls {
+  display: flex;
+  align-items: end;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.autoplace-controls .field {
+  flex: 1;
+}
+
+.autoplace-panel select,
+.autoplace-panel input {
+  width: 100%;
+  font-family: var(--mono);
+  font-size: 12px;
+  padding: 7px 8px;
+  color: var(--ink);
+  background: #fffdf6;
+  border: 1px solid var(--line);
+  min-width: 0;
+}
+
+.autoplace-panel select:focus,
+.autoplace-panel input:focus {
+  outline: 2px solid var(--amber);
+  outline-offset: -1px;
+}
+
+.autoplace-seed {
+  flex: 0 0 92px;
+}
+
+.autoplace-run {
+  width: 100%;
+}
+
+.autoplace-budget {
+  margin: 6px 0 0;
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--ink-soft);
+}
+
+.autoplace-report {
+  margin-top: 12px;
+  padding: 9px 10px;
+  background: var(--paper);
+  border-left: 3px solid var(--amber);
+}
+
+.autoplace-report-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-family: var(--mono);
+  font-size: 9.5px;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.autoplace-report .estimate-list {
+  margin-bottom: 10px;
+}
+
+.autoplace-reasons {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin: 6px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.autoplace-reasons .why-bar {
+  background: rgba(58, 50, 35, 0.14);
+}
+
+.inspector-region {
+  margin: 0 0 10px;
+}
+
+.inspector-region-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  margin-top: 5px;
+  flex-wrap: wrap;
+}
+
+.inspector-region-row .mono {
+  font-size: 10px;
+}
+
+.inspector-region-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.inspector-region-actions .is-active {
+  background: var(--ink);
+  border-color: var(--amber-bright);
+  color: var(--paper);
+}
+
+.inspector-region-hint {
+  margin: 5px 0 0;
+  font-size: 9.5px;
+  line-height: 1.4;
+  color: var(--ink-soft);
+}
+
+.legend-region::before {
+  height: 7px;
+  background: transparent;
+  border: 1.5px dashed var(--amber);
+}
+
+.floorplan-canvas.is-painting {
+  cursor: cell;
+}
+
+.autoplace-preset {
+  margin-bottom: 8px;
+}
+
+.autoplace-preset select {
+  width: 100%;
+}
+
+.autoplace-preset-note,
+.autoplace-preset-result {
+  margin: 0 0 8px;
+  font-size: 10px;
+  line-height: 1.4;
+  color: var(--ink-soft);
+}
+
+.autoplace-preset-result {
+  font-family: var(--mono);
+  color: var(--amber);
+}

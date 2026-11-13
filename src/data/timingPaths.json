@@ -1,0 +1,55 @@
+[
+  {
+    "id": "execute-loop",
+    "name": "Register file → ALU → register file",
+    "stages": [
+      { "blockTypes": ["register-file"] },
+      { "blockTypes": ["alu"] },
+      { "blockTypes": ["register-file"] }
+    ],
+    "legs": ["link", "link"]
+  },
+  {
+    "id": "decode-execute",
+    "name": "Decoder → ALU → register file",
+    "stages": [
+      { "blockTypes": ["decoder-hardwired", "decoder-microcoded"] },
+      { "blockTypes": ["alu"] },
+      { "blockTypes": ["register-file"] }
+    ],
+    "legs": ["link", "link"]
+  },
+  {
+    "id": "fetch-decode",
+    "name": "Program counter → decoder",
+    "stages": [
+      { "blockTypes": ["program-counter"] },
+      { "blockTypes": ["decoder-hardwired", "decoder-microcoded"] }
+    ],
+    "legs": ["wire"]
+  },
+  {
+    "id": "fetch-bus",
+    "name": "Program counter → bus interface",
+    "stages": [
+      { "blockTypes": ["program-counter"] },
+      { "blockTypes": ["bus-interface"] }
+    ],
+    "legs": ["link"]
+  },
+  {
+    "id": "microcode-control",
+    "name": "Microcode ROM → control",
+    "stages": [{ "blockTypes": ["decoder-microcoded"] }],
+    "legs": []
+  },
+  {
+    "id": "bus-pads",
+    "name": "Bus interface → I/O pads",
+    "stages": [
+      { "blockTypes": ["bus-interface"] },
+      { "blockTypes": ["io-pads"] }
+    ],
+    "legs": ["link"]
+  }
+]

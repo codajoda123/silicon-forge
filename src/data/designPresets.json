@@ -1,0 +1,94 @@
+[
+  {
+    "id": "calculator-1971",
+    "name": "1971 Calculator CPU",
+    "description": "The first-chip teaching design: 4-bit datapath, microcoded control, 4-bit bus and a small register file.",
+    "historicalYear": 1971,
+    "nodeId": "10um-pmos",
+    "packageId": "ceramic-dip",
+    "dieW": 10,
+    "dieH": 10,
+    "blocks": [
+      { "typeId": "io-pads", "config": { "dataPins": 4, "addressPins": 0, "controlPins": 2 } },
+      { "typeId": "bus-interface", "config": { "busWidth": 4, "multiplexed": true, "prefetchBytes": 0 } },
+      { "typeId": "decoder-microcoded", "config": { "microcodeWords": 128, "microcodeWidth": 16 } },
+      { "typeId": "register-file", "config": { "registers": 16, "width": 4, "ports": 3 }, "aspectRatio": 0.5 },
+      { "typeId": "program-counter", "config": { "addressWidth": 4 }, "aspectRatio": 2 },
+      { "typeId": "alu", "config": { "width": 4, "carry": "ripple" }, "aspectRatio": 2 }
+    ]
+  },
+  {
+    "id": "consumer-8bit-1974",
+    "name": "1974 8-bit Consumer CPU",
+    "description": "An 8-bit consumer part with hardwired decode, a barrel shifter, an iterative multiplier and a prefetch queue.",
+    "historicalYear": 1974,
+    "nodeId": "6um-nmos",
+    "packageId": "plastic-dip",
+    "dieW": 16,
+    "dieH": 16,
+    "blocks": [
+      { "typeId": "io-pads", "config": { "dataPins": 8, "addressPins": 0, "controlPins": 4 } },
+      { "typeId": "bus-interface", "config": { "busWidth": 8, "multiplexed": true, "prefetchBytes": 4 } },
+      { "typeId": "decoder-hardwired", "config": {} },
+      { "typeId": "register-file", "config": { "registers": 8, "width": 8, "ports": 5 } },
+      { "typeId": "alu", "config": { "width": 8, "carry": "ripple" } },
+      { "typeId": "shifter", "config": { "width": 8, "type": "barrel" } },
+      { "typeId": "multiplier", "config": { "width": 8, "mode": "iterative" } },
+      { "typeId": "program-counter", "config": { "addressWidth": 16 } },
+      { "typeId": "interrupt-timer", "config": {} },
+      { "typeId": "clock-generator", "config": {} }
+    ]
+  },
+  {
+    "id": "processor-16bit-1978",
+    "name": "1978 16-bit Processor",
+    "description": "A 16-bit machine with a microcoded decoder, two ALUs, an array multiplier, a barrel shifter and a wider bus.",
+    "historicalYear": 1978,
+    "nodeId": "3um-hmos",
+    "packageId": "ceramic-dip",
+    "dieW": 20,
+    "dieH": 20,
+    "blocks": [
+      { "typeId": "io-pads", "config": { "dataPins": 16, "addressPins": 8, "controlPins": 4 } },
+      { "typeId": "bus-interface", "config": { "busWidth": 16, "multiplexed": false, "prefetchBytes": 8 } },
+      { "typeId": "decoder-microcoded", "config": { "microcodeWords": 256, "microcodeWidth": 32 } },
+      { "typeId": "register-file", "config": { "registers": 16, "width": 16, "ports": 5 } },
+      { "typeId": "alu", "config": { "width": 16, "carry": "ripple" } },
+      { "typeId": "alu", "config": { "width": 16, "carry": "ripple" } },
+      { "typeId": "multiplier", "config": { "width": 16, "mode": "array" } },
+      { "typeId": "divider", "config": { "width": 16, "mode": "iterative" } },
+      { "typeId": "shifter", "config": { "width": 16, "type": "barrel" } },
+      { "typeId": "program-counter", "config": { "addressWidth": 20 } },
+      { "typeId": "interrupt-timer", "config": {} },
+      { "typeId": "clock-generator", "config": {} }
+    ]
+  },
+  {
+    "id": "cpu-32bit-1985",
+    "name": "1985 32-bit CPU with Caches",
+    "description": "A 32-bit design with paging MMU, an FPU, two ALUs, split 1 KB caches and a 32-bit non-multiplexed bus.",
+    "historicalYear": 1985,
+    "nodeId": "1.5um-cmos",
+    "packageId": "plcc",
+    "dieW": 32,
+    "dieH": 32,
+    "blocks": [
+      { "typeId": "io-pads", "config": { "dataPins": 32, "addressPins": 16, "controlPins": 6 } },
+      { "typeId": "bus-interface", "config": { "busWidth": 32, "multiplexed": false, "prefetchBytes": 8 } },
+      { "typeId": "decoder-hardwired", "config": {} },
+      { "typeId": "register-file", "config": { "registers": 32, "width": 32, "ports": 7 } },
+      { "typeId": "alu", "config": { "width": 32, "carry": "lookahead" } },
+      { "typeId": "alu", "config": { "width": 32, "carry": "lookahead" } },
+      { "typeId": "multiplier", "config": { "width": 32, "mode": "array" } },
+      { "typeId": "divider", "config": { "width": 32, "mode": "iterative" } },
+      { "typeId": "shifter", "config": { "width": 32, "type": "barrel" } },
+      { "typeId": "fpu", "config": { "precision": "single", "mode": "basic" } },
+      { "typeId": "mmu", "config": { "mode": "paging" } },
+      { "typeId": "instruction-cache", "config": { "sizeKB": 1, "lineBytes": 16, "associativity": 2 } },
+      { "typeId": "data-cache", "config": { "sizeKB": 1, "lineBytes": 16, "associativity": 2, "writeBack": true } },
+      { "typeId": "program-counter", "config": { "addressWidth": 32 } },
+      { "typeId": "interrupt-timer", "config": {} },
+      { "typeId": "clock-generator", "config": {} }
+    ]
+  }
+]

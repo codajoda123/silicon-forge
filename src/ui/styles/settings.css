@@ -1,0 +1,63 @@
+/* ---------- M5: design settings panel (Section 7.6) ---------- */
+
+/* Design settings panel */
+
+.design-settings-panel {
+  margin-bottom: 18px;
+}
+
+.design-settings-panel .settings-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.design-settings-panel .checkbox-field {
+  padding-top: 16px;
+}
+
+.settings-status {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px dotted rgba(58, 50, 35, 0.35);
+  font-size: 12px;
+}
+
+.settings-status > div {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.settings-status .muted {
+  font-size: 11px;
+}
+
+.settings-ok {
+  color: var(--green);
+}
+
+.settings-warning {
+  color: var(--red);
+  font-weight: 700;
+}
+
+@media (max-width: 1100px) {
+  .archetype-grid,
+  .design-settings-panel .settings-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .settings-status {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .archetype-grid,
+  .isa-field-grid,
+  .extension-grid,
+  .design-settings-panel .settings-grid {
+    grid-template-columns: 1fr;
+  }
+}

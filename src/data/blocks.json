@@ -1,0 +1,678 @@
+[
+  {
+    "id": "program-counter",
+    "name": "Program counter & fetch",
+    "category": "fetch",
+    "description": "Holds the instruction address and feeds the instruction stream.",
+    "historicalYear": 1971,
+    "configSchema": {
+      "addressWidth": {
+        "kind": "integer",
+        "label": "Address width (bits)",
+        "min": 4,
+        "max": 32,
+        "default": 16
+      }
+    },
+    "transistors": "160 + 18 * addressWidth",
+    "logicDepth": "6",
+    "activity": {
+      "branch": 1,
+      "load": 0.15,
+      "store": 0.15
+    },
+    "requiredLinks": [
+      {
+        "to": "bus-interface",
+        "widthBits": "addressWidth",
+        "timing": "critical"
+      }
+    ]
+  },
+  {
+    "id": "bus-interface",
+    "name": "Bus interface unit",
+    "category": "bus",
+    "description": "Connects the core to memory. Multiplexing saves pins but costs bus cycles.",
+    "historicalYear": 1971,
+    "edgeOnly": true,
+    "configSchema": {
+      "busWidth": {
+        "kind": "enum",
+        "label": "Bus width",
+        "values": [
+          4,
+          8,
+          16,
+          32
+        ],
+        "default": 8
+      },
+      "multiplexed": {
+        "kind": "boolean",
+        "label": "Multiplex address/data",
+        "default": true
+      },
+      "prefetchBytes": {
+        "kind": "integer",
+        "label": "Prefetch queue (bytes)",
+        "min": 0,
+        "max": 8,
+        "default": 0
+      }
+    },
+    "transistors": "500 + 30 * busWidth + (multiplexed ? 60 : 0) + 40 * prefetchBytes",
+    "logicDepth": "8 + (multiplexed ? 2 : 0)",
+    "activity": {
+      "load": 0.6,
+      "store": 0.6
+    },
+    "requiredLinks": [
+      {
+        "to": "io-pads",
+        "widthBits": "busWidth",
+        "timing": "critical"
+      }
+    ],
+    "unitFor": [
+      "load",
+      "store"
+    ]
+  },
+  {
+    "id": "decoder-hardwired",
+    "name": "Hardwired decoder",
+    "category": "decode",
+    "description": "Fast, low-cycle decode; grows with instruction complexity and is hard to patch after tape-out.",
+    "historicalYear": 1971,
+    "configSchema": {},
+    "transistors": "700",
+    "logicDepth": "10",
+    "activity": {
+      "branch": 0.4,
+      "intAlu": 0.2
+    },
+    "requiredLinks": [
+      {
+        "to": "alu",
+        "widthBits": "8",
+        "timing": "critical"
+      },
+      {
+        "to": "register-file",
+        "widthBits": "8",
+        "timing": "normal"
+      }
+    ]
+  },
+  {
+    "id": "decoder-microcoded",
+    "name": "Microcoded decoder",
+    "category": "decode",
+    "description": "Compact decode for complex ISAs; many bugs can be fixed in microcode before tape-out.",
+    "historicalYear": 1974,
+    "configSchema": {
+      "microcodeWords": {
+        "kind": "integer",
+        "label": "Microcode ROM words",
+        "min": 128,
+        "max": 2048,
+        "default": 128
+      },
+      "microcodeWidth": {
+        "kind": "integer",
+        "label": "Microcode word width (bits)",
+        "min": 16,
+        "max": 64,
+        "default": 16
+      }
+    },
+    "transistors": "500 + 0.1 * microcodeWords * microcodeWidth",
+    "logicDepth": "12 + log2(microcodeWords)",
+    "activity": {
+      "branch": 0.5,
+      "intAlu": 0.25
+    },
+    "requiredLinks": [
+      {
+        "to": "alu",
+        "widthBits": "8",
+        "timing": "critical"
+      },
+      {
+        "to": "register-file",
+        "widthBits": "8",
+        "timing": "normal"
+      }
+    ]
+  },
+  {
+    "id": "register-file",
+    "name": "Register file",
+    "category": "datapath",
+    "description": "Registers cost area quadratically with ports; every execution unit needs access.",
+    "historicalYear": 1971,
+    "configSchema": {
+      "registers": {
+        "kind": "integer",
+        "label": "Registers",
+        "min": 8,
+        "max": 64,
+        "default": 16
+      },
+      "width": {
+        "kind": "enum",
+        "label": "Register width",
+        "values": [
+          4,
+          8,
+          16,
+          32
+        ],
+        "default": 8
+      },
+      "ports": {
+        "kind": "integer",
+        "label": "Total ports",
+        "min": 2,
+        "max": 12,
+        "default": 3
+      }
+    },
+    "transistors": "6 * registers * width * (1 + 0.15 * (ports - 3)) ^ 2",
+    "logicDepth": "5 + log2(registers)",
+    "activity": {
+      "intAlu": 0.6,
+      "load": 0.4,
+      "store": 0.4
+    },
+    "requiredLinks": [
+      {
+        "to": "alu",
+        "widthBits": "width",
+        "timing": "critical"
+      }
+    ]
+  },
+  {
+    "id": "alu",
+    "name": "ALU",
+    "category": "datapath",
+    "description": "Ripple-carry is small but slow; carry-lookahead costs about 1.6x the transistors and shortens the path.",
+    "historicalYear": 1971,
+    "configSchema": {
+      "width": {
+        "kind": "enum",
+        "label": "ALU width",
+        "values": [
+          4,
+          8,
+          16,
+          32
+        ],
+        "default": 8
+      },
+      "carry": {
+        "kind": "enum",
+        "label": "Carry style",
+        "values": [
+          "ripple",
+          "lookahead"
+        ],
+        "default": "ripple"
+      }
+    },
+    "transistors": "(carry == 'lookahead' ? 1.6 : 1) * (180 + 22 * width)",
+    "logicDepth": "carry == 'lookahead' ? 4 * log2(width) + 6 : 2 * width + 4",
+    "activity": {
+      "intAlu": 1,
+      "intMul": 0.2,
+      "intDiv": 0.1,
+      "shift": 0.15,
+      "bcd": 0.1
+    },
+    "requiredLinks": [
+      {
+        "to": "register-file",
+        "widthBits": "width",
+        "timing": "critical"
+      },
+      {
+        "to": "shifter",
+        "widthBits": "width",
+        "timing": "normal"
+      }
+    ],
+    "unitFor": [
+      "intAlu",
+      "bcd",
+      "branch"
+    ]
+  },
+  {
+    "id": "shifter",
+    "name": "Shifter",
+    "category": "datapath",
+    "description": "A simple shifter takes multiple cycles; a barrel shifter is large but shifts in one cycle.",
+    "historicalYear": 1971,
+    "configSchema": {
+      "width": {
+        "kind": "enum",
+        "label": "Data width",
+        "values": [
+          4,
+          8,
+          16,
+          32
+        ],
+        "default": 8
+      },
+      "type": {
+        "kind": "enum",
+        "label": "Shifter type",
+        "values": [
+          "simple",
+          "barrel"
+        ],
+        "default": "simple"
+      }
+    },
+    "transistors": "type == 'barrel' ? 140 + 9 * width ^ 2 : 60 + 6 * width",
+    "logicDepth": "type == 'barrel' ? 4 + log2(width) : 2 + width / 2",
+    "activity": {
+      "shift": 1,
+      "bcd": 0.1
+    },
+    "requiredLinks": [
+      {
+        "to": "alu",
+        "widthBits": "width",
+        "timing": "normal"
+      }
+    ],
+    "unitFor": [
+      "shift"
+    ]
+  },
+  {
+    "id": "multiplier",
+    "name": "Multiplier",
+    "category": "datapath",
+    "description": "Array multipliers are large and fast; iterative units are small; none means software loops.",
+    "historicalYear": 1976,
+    "configSchema": {
+      "width": {
+        "kind": "enum",
+        "label": "Data width",
+        "values": [
+          4,
+          8,
+          16,
+          32
+        ],
+        "default": 8
+      },
+      "mode": {
+        "kind": "enum",
+        "label": "Multiplier style",
+        "values": [
+          "none",
+          "iterative",
+          "array"
+        ],
+        "default": "none"
+      }
+    },
+    "transistors": "mode == 'array' ? 30 * width ^ 2 : mode == 'iterative' ? 8 * width + 200 : 0",
+    "logicDepth": "mode == 'array' ? 4 * log2(width) + 8 : mode == 'iterative' ? 2 * width + 6 : 1",
+    "activity": {
+      "intMul": 0.8
+    },
+    "requiredLinks": [
+      {
+        "to": "alu",
+        "widthBits": "width",
+        "timing": "normal"
+      }
+    ],
+    "unitFor": [
+      "intMul"
+    ]
+  },
+  {
+    "id": "divider",
+    "name": "Divider",
+    "category": "datapath",
+    "description": "Iterative division saves area but takes many cycles; software division is even slower.",
+    "historicalYear": 1978,
+    "configSchema": {
+      "width": {
+        "kind": "enum",
+        "label": "Data width",
+        "values": [
+          4,
+          8,
+          16,
+          32
+        ],
+        "default": 8
+      },
+      "mode": {
+        "kind": "enum",
+        "label": "Divider style",
+        "values": [
+          "none",
+          "iterative"
+        ],
+        "default": "none"
+      }
+    },
+    "transistors": "mode == 'iterative' ? 24 * width + 300 : 0",
+    "logicDepth": "mode == 'iterative' ? 4 * width + 8 : 1",
+    "activity": {
+      "intDiv": 0.8
+    },
+    "requiredLinks": [
+      {
+        "to": "alu",
+        "widthBits": "width",
+        "timing": "normal"
+      }
+    ],
+    "unitFor": [
+      "intDiv"
+    ]
+  },
+  {
+    "id": "fpu",
+    "name": "Floating-point unit",
+    "category": "datapath",
+    "description": "Huge in Phase 1; needed for scientific and CAD workloads, dead area for integer code.",
+    "historicalYear": 1980,
+    "configSchema": {
+      "precision": {
+        "kind": "enum",
+        "label": "Precision",
+        "values": [
+          "single",
+          "double"
+        ],
+        "default": "single"
+      },
+      "mode": {
+        "kind": "enum",
+        "label": "FPU style",
+        "values": [
+          "none",
+          "basic",
+          "sqrt"
+        ],
+        "default": "none"
+      }
+    },
+    "transistors": "(mode == 'none' ? 0 : mode == 'sqrt' ? 42000 : 30000) * (precision == 'double' ? 1.8 : 1)",
+    "logicDepth": "mode == 'none' ? 1 : (mode == 'sqrt' ? 40 : 32) * (precision == 'double' ? 1.5 : 1)",
+    "activity": {
+      "fpAdd": 0.9,
+      "fpMul": 0.9,
+      "fpDiv": 0.8,
+      "fpSqrt": 0.8
+    },
+    "requiredLinks": [
+      {
+        "to": "register-file",
+        "widthBits": "32",
+        "timing": "normal"
+      }
+    ],
+    "unitFor": [
+      "fpAdd",
+      "fpMul",
+      "fpDiv",
+      "fpSqrt"
+    ],
+    "disableable": true
+  },
+  {
+    "id": "mmu",
+    "name": "Memory management unit",
+    "category": "memory",
+    "description": "Segmentation is cheap; paging is more flexible and required by multi-user systems.",
+    "historicalYear": 1980,
+    "configSchema": {
+      "mode": {
+        "kind": "enum",
+        "label": "Translation",
+        "values": [
+          "none",
+          "segmentation",
+          "paging"
+        ],
+        "default": "none"
+      }
+    },
+    "transistors": "mode == 'none' ? 0 : mode == 'segmentation' ? 1200 : 4500",
+    "logicDepth": "mode == 'none' ? 1 : 12",
+    "activity": {
+      "load": 0.25,
+      "store": 0.25
+    },
+    "requiredLinks": [
+      {
+        "to": "bus-interface",
+        "widthBits": "16",
+        "timing": "normal"
+      }
+    ]
+  },
+  {
+    "id": "instruction-cache",
+    "name": "Instruction cache",
+    "category": "memory",
+    "description": "Only worth it once memory is slower than the core clock.",
+    "historicalYear": 1984,
+    "isMemoryArray": true,
+    "repairable": true,
+    "configSchema": {
+      "sizeKB": {
+        "kind": "integer",
+        "label": "Size (KB)",
+        "min": 0,
+        "max": 8,
+        "default": 0
+      },
+      "lineBytes": {
+        "kind": "enum",
+        "label": "Line size (bytes)",
+        "values": [
+          8,
+          16,
+          32
+        ],
+        "default": 16
+      },
+      "associativity": {
+        "kind": "integer",
+        "label": "Associativity",
+        "min": 1,
+        "max": 4,
+        "default": 1
+      }
+    },
+    "transistors": "sizeKB * 1024 * 8 * (associativity == 1 ? 6 : 7) + 300",
+    "logicDepth": "8 + log2(lineBytes)",
+    "activity": {},
+    "requiredLinks": [
+      {
+        "to": "bus-interface",
+        "widthBits": "8",
+        "timing": "normal"
+      }
+    ],
+    "disableable": true
+  },
+  {
+    "id": "data-cache",
+    "name": "Data cache",
+    "category": "memory",
+    "description": "Write-back saves bandwidth but complicates coherence; write-through is simpler.",
+    "historicalYear": 1987,
+    "isMemoryArray": true,
+    "repairable": true,
+    "configSchema": {
+      "sizeKB": {
+        "kind": "integer",
+        "label": "Size (KB)",
+        "min": 0,
+        "max": 8,
+        "default": 0
+      },
+      "lineBytes": {
+        "kind": "enum",
+        "label": "Line size (bytes)",
+        "values": [
+          8,
+          16,
+          32
+        ],
+        "default": 16
+      },
+      "associativity": {
+        "kind": "integer",
+        "label": "Associativity",
+        "min": 1,
+        "max": 4,
+        "default": 1
+      },
+      "writeBack": {
+        "kind": "boolean",
+        "label": "Write-back",
+        "default": false
+      }
+    },
+    "transistors": "sizeKB * 1024 * 8 * 6 * (associativity == 1 ? 1 : 1.15) + 260 + (writeBack ? 400 : 0)",
+    "logicDepth": "7 + log2(lineBytes)",
+    "activity": {},
+    "requiredLinks": [
+      {
+        "to": "bus-interface",
+        "widthBits": "8",
+        "timing": "normal"
+      }
+    ],
+    "disableable": true
+  },
+  {
+    "id": "interrupt-timer",
+    "name": "Interrupt & timer unit",
+    "category": "system",
+    "description": "Required by embedded and industrial customers.",
+    "historicalYear": 1974,
+    "configSchema": {},
+    "transistors": "600",
+    "logicDepth": "8",
+    "activity": {
+      "branch": 0.15
+    },
+    "requiredLinks": [
+      {
+        "to": "bus-interface",
+        "widthBits": "8",
+        "timing": "normal"
+      }
+    ]
+  },
+  {
+    "id": "clock-generator",
+    "name": "On-chip clock generator",
+    "category": "system",
+    "description": "Saves board cost and pleases customers, but adds area and a hot spot.",
+    "historicalYear": 1971,
+    "configSchema": {},
+    "transistors": "350",
+    "logicDepth": "2",
+    "activity": {},
+    "requiredLinks": []
+  },
+  {
+    "id": "io-pads",
+    "name": "I/O pads",
+    "category": "io",
+    "description": "Edge-only pads. Pin count is limited by the package.",
+    "historicalYear": 1971,
+    "edgeOnly": true,
+    "configSchema": {
+      "dataPins": {
+        "kind": "integer",
+        "label": "Data pins",
+        "min": 4,
+        "max": 64,
+        "default": 4
+      },
+      "addressPins": {
+        "kind": "integer",
+        "label": "Address pins",
+        "min": 0,
+        "max": 32,
+        "default": 0
+      },
+      "controlPins": {
+        "kind": "integer",
+        "label": "Control pins",
+        "min": 2,
+        "max": 16,
+        "default": 2
+      }
+    },
+    "transistors": "(dataPins + addressPins + controlPins) * 50",
+    "logicDepth": "3",
+    "activity": {},
+    "requiredLinks": [
+      {
+        "to": "bus-interface",
+        "widthBits": "dataPins",
+        "timing": "critical"
+      }
+    ]
+  },
+  {
+    "id": "custom-unit",
+    "name": "Custom instruction unit",
+    "category": "accelerator",
+    "description": "Executes one macro-instruction pattern quickly; dead area for other workloads.",
+    "historicalYear": 1975,
+    "configSchema": {
+      "width": {
+        "kind": "enum",
+        "label": "Data width",
+        "values": [
+          4,
+          8,
+          16,
+          32
+        ],
+        "default": 8
+      },
+      "latencyCycles": {
+        "kind": "integer",
+        "label": "Latency (cycles)",
+        "min": 1,
+        "max": 16,
+        "default": 2
+      }
+    },
+    "transistors": "1500 + 120 * width + 200 * latencyCycles",
+    "logicDepth": "10 + 2 * latencyCycles",
+    "activity": {},
+    "requiredLinks": [
+      {
+        "to": "register-file",
+        "widthBits": "width",
+        "timing": "normal"
+      }
+    ],
+    "unitFor": [
+      "simd"
+    ]
+  }
+]

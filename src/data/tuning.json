@@ -1,0 +1,407 @@
+{
+  "time": {
+    "baseTickMsPerWeek": 1000,
+    "defaultStartYear": 1971
+  },
+  "newGame": {
+    "defaultCompanyName": "Meridian Microsystems",
+    "defaultSeed": 1971,
+    "startingCash": 50000000,
+    "earliestStartYear": 1900,
+    "latestStartYear": 2100,
+    "companyNameMaxLength": 40
+  },
+  "log": {
+    "maxEntries": 200
+  },
+  "design": {
+    "defaultName": "Project Nova-1",
+    "nameMaxLength": 40,
+    "defaultDieWidth": 10,
+    "defaultDieHeight": 10,
+    "minDieWidth": 3,
+    "minDieHeight": 3,
+    "maxDieWidth": 40,
+    "maxDieHeight": 40,
+    "minBlockTiles": 1,
+    "aspectRatios": [
+      {
+        "label": "Square",
+        "ratio": 1
+      },
+      {
+        "label": "Wide",
+        "ratio": 2
+      },
+      {
+        "label": "Tall",
+        "ratio": 0.5
+      }
+    ],
+    "padDepthMm": 0.35,
+    "scribeWidthMm": 0.12,
+    "padPitchMm": 0.25,
+    "powerGroundPins": 2,
+    "undoLimit": 20
+  },
+  "physical": {
+    "voltageExponent": 1.3,
+    "latchOverheadGateDelays": 3,
+    "defaultPipelineStages": 1,
+    "ambientTempC": 25,
+    "thermalIterations": 60,
+    "thermalToleranceC": 0.001,
+    "lateralConductanceWPerC": 0.0002,
+    "thermalDerateIterations": 6,
+    "minimumClockFraction": 0.02
+  },
+  "power": {
+    "referenceWorkloadId": "calculator-math",
+    "ioPowerPerPadW": 0.0005,
+    "ioReferenceClockMHz": 1
+  },
+  "congestion": {
+    "tracksPerTile": 24,
+    "detourPerOverflowRatio": 2.0
+  },
+  "autoplace": {
+    "defaultSeed": 1971,
+    "baseIterations": 2000,
+    "defaultEdaLevel": 1,
+    "initialTemperatureFraction": 0.1,
+    "coolingRate": 0.995,
+    "attemptsPerIteration": 12,
+    "localMoveFraction": 0.5,
+    "localMoveRadiusTiles": 4,
+    "rotationChance": 0.25,
+    "searchThermalIterations": 10,
+    "scoringClockMHz": 1,
+    "thermalTargetRiseC": 15,
+    "thermalTargetMarginC": 5,
+    "edgePenalty": 1000000,
+    "wireScaleMmBits": 100,
+    "congestionScaleTracks": 100,
+    "heatScaleC": 10,
+    "reportReasons": 3,
+    "modes": {
+      "performance": {
+        "wire": 1,
+        "congestion": 0.35,
+        "heat": 0.2,
+        "area": 0.15,
+        "edge": 1
+      },
+      "thermal": {
+        "wire": 0.35,
+        "congestion": 0.2,
+        "heat": 1,
+        "area": 0.1,
+        "edge": 1
+      },
+      "area": {
+        "wire": 0.25,
+        "congestion": 0.15,
+        "heat": 0.1,
+        "area": 1,
+        "edge": 1
+      }
+    }
+  },
+  "isa": {
+    "wordBitsOptions": [
+      4,
+      8,
+      16,
+      32
+    ],
+    "registerOptions": [
+      2,
+      4,
+      8,
+      16,
+      32
+    ],
+    "addressBitsMin": 8,
+    "addressBitsMax": 32,
+    "addressingModesMin": 1,
+    "addressingModesMax": 12,
+    "referenceWordBits": 8,
+    "widthPassClasses": [
+      "intAlu",
+      "intMul",
+      "intDiv",
+      "shift",
+      "bcd",
+      "fpAdd",
+      "fpMul",
+      "fpDiv",
+      "fpSqrt",
+      "load",
+      "store",
+      "simd"
+    ],
+    "opcodeSpaceMultiplier": 4,
+    "extraEncodingBytesPerOverflowChunk": 1,
+    "customCompilerSupport": 0.3,
+    "maxCustomRemovalShare": 0.75,
+    "registersPerIlp": 2,
+    "baseWorkingRegisters": 4,
+    "spillTrafficFactor": 0.5,
+    "variableBytesWidthExponent": 0.5,
+    "addressingModesDensityPerMode": 0.02,
+    "maxAddressingDensityReduction": 0.3,
+    "minimumInstructionBytes": 1,
+    "defaultTargetClockMHz": 1,
+    "targetClockMinMHz": 0.01,
+    "targetClockMaxMHz": 200,
+    "pipelineStagesMin": 1,
+    "pipelineStagesMax": 5,
+    "prefetchQueueMinBytes": 0,
+    "prefetchQueueMaxBytes": 64,
+    "defaultControl": "microcoded",
+    "defaultCooling": "none",
+    "defaultTestStrategy": "functional",
+    "defaultSpareRows": false,
+    "defaultBusMultiplexed": true,
+    "defaultPrefetchQueueBytes": 0,
+    "extensions": [
+      {
+        "id": "multiply",
+        "label": "Multiply",
+        "description": "Hardware multiplier; without it intMul becomes a software routine.",
+        "opClasses": [
+          "intMul"
+        ],
+        "missingHardwareFactor": 2
+      },
+      {
+        "id": "divide",
+        "label": "Divide",
+        "description": "Hardware divider; without it intDiv becomes a software routine.",
+        "opClasses": [
+          "intDiv"
+        ],
+        "missingHardwareFactor": 2
+      },
+      {
+        "id": "bcd",
+        "label": "BCD adjust",
+        "description": "Decimal adjust hardware for packed BCD arithmetic.",
+        "opClasses": [
+          "bcd"
+        ],
+        "missingHardwareFactor": 1.6
+      },
+      {
+        "id": "floating-point",
+        "label": "Floating point",
+        "description": "Hardware floating point; without it every FP op is a library call.",
+        "opClasses": [
+          "fpAdd",
+          "fpMul",
+          "fpDiv",
+          "fpSqrt"
+        ],
+        "missingHardwareFactor": 2.5
+      }
+    ],
+    "testStrategies": [
+      {
+        "id": "none",
+        "label": "None",
+        "description": "Ship and pray; no tester cost.",
+        "coverage": 0.0,
+        "escapeRate": 1.0,
+        "costPerDie": 0.0
+      },
+      {
+        "id": "functional",
+        "label": "Functional tester",
+        "description": "Basic stuck-at vectors.",
+        "coverage": 0.5,
+        "escapeRate": 0.03,
+        "costPerDie": 0.05
+      },
+      {
+        "id": "scan",
+        "label": "Scan test",
+        "description": "Scan chains plus functional vectors.",
+        "coverage": 0.8,
+        "escapeRate": 0.01,
+        "costPerDie": 0.15
+      },
+      {
+        "id": "full-scan-bist",
+        "label": "Full scan + BIST",
+        "description": "Structured test with built-in self-test.",
+        "coverage": 0.95,
+        "escapeRate": 0.002,
+        "costPerDie": 0.35
+      },
+      {
+        "id": "at-speed",
+        "label": "At-speed test",
+        "description": "Functional vectors at rated clock; needed for credible speed bins.",
+        "coverage": 0.75,
+        "escapeRate": 0.01,
+        "costPerDie": 0.2
+      },
+      {
+        "id": "burn-in",
+        "label": "Burn-in",
+        "description": "Adds a burn-in soak to remove early reliability failures; expensive.",
+        "coverage": 0.9,
+        "escapeRate": 0.005,
+        "costPerDie": 0.5
+      }
+    ],
+    "coolingOptions": [
+      {
+        "id": "none",
+        "label": "None",
+        "verticalConductanceMultiplier": 1
+      },
+      {
+        "id": "heatsink",
+        "label": "Heatsink",
+        "verticalConductanceMultiplier": 3
+      },
+      {
+        "id": "fan",
+        "label": "Fan + heatsink",
+        "description": "Active cooling for high-power parts.",
+        "verticalConductanceMultiplier": 40
+      }
+    ],
+    "addressShortfallPenaltyPerDoubling": 0.5
+  },
+  "timing": {
+    "clockSkewPsPerMm": 300,
+    "maxPathInstances": 20000
+  },
+  "save": {
+    "storageKey": "silicon-forge.save.v1"
+  },
+  "perf": {
+    "issueWidth": 1,
+    "oooWindow": 0,
+    "oooHidingScale": 32,
+    "controlFactors": {
+      "hardwired": 1.0,
+      "microcoded": 1.5
+    },
+    "unitOccupancy": {
+      "intAlu": 1,
+      "intMul": 4,
+      "intDiv": 8,
+      "shift": 1,
+      "bcd": 2,
+      "fpAdd": 4,
+      "fpMul": 4,
+      "fpDiv": 8,
+      "fpSqrt": 12,
+      "load": 1,
+      "store": 1,
+      "branch": 1,
+      "simd": 2
+    },
+    "fallbackUnitClass": "intAlu",
+    "missingUnitCount": 1,
+    "branch": {
+      "baseAccuracy": 0.4,
+      "predictabilityScale": 0.45,
+      "maxAccuracy": 0.95
+    },
+    "memory": {
+      "compulsoryMissFloor": 0.02,
+      "missRateCoefficient": 0.7,
+      "missRateExponent": 0.5,
+      "associativityMissReduction": 0.08,
+      "cacheAccessTimePsPerSqrtKB": 1200,
+      "multiplexedExtraBusCycles": 1,
+      "prefetchHiddenSharePerBufferedInstr": 0.25,
+      "maxPrefetchHiddenShare": 0.75
+    },
+    "fps": {
+      "fixedOverheadMs": 0.4
+    },
+    "uncertainty": {
+      "baseModelError": 0.04,
+      "validationWeight": 0.1,
+      "compilerWeight": 0.08,
+      "highThreshold": 0.08,
+      "mediumThreshold": 0.15,
+      "shownReasons": 2
+    }
+  },
+  "manufacturing": {
+    "waferDefect": {
+      "clusteringAlpha": 2.5,
+      "monteCarloDies": 500,
+      "spareRowsPerArray": 2,
+      "whitespaceHarmlessChance": 0.9,
+      "minimumFrequencyMHz": 0.001,
+      "powerFrequencyExponent": 1.0
+    },
+    "foundry": {
+      "contract": {
+        "label": "Contract fab (rented capacity)",
+        "waferCostMultiplier": 1.6,
+        "capacityPerWeek": 25,
+        "leadTimeWeeks": 12,
+        "upfrontCost": 0,
+        "takeOrPay": false
+      },
+      "reserved": {
+        "label": "Reserved capacity contract",
+        "waferCostMultiplier": 1.25,
+        "capacityPerWeek": 50,
+        "leadTimeWeeks": 9,
+        "upfrontCost": 300000,
+        "takeOrPay": true
+      },
+      "testAndPackageWeeks": 2,
+      "minWaferLot": 1,
+      "maxWaferLot": 100
+    },
+    "skuAuto": {
+      "names": [
+        "Pro",
+        "Standard",
+        "Value",
+        "Salvage"
+      ],
+      "highFrequencyFraction": 0.95,
+      "midFrequencyFraction": 0.8,
+      "lowFrequencyFraction": 0.6,
+      "salvageFrequencyFraction": 0.45,
+      "priceBase": 25,
+      "pricePerMHz": 35,
+      "salvagePriceMultiplier": 0.55,
+      "priceRounding": 5
+    },
+    "validation": {
+      "baseBugCoefficient": 0.6,
+      "bugTransistorExponent": 0.6,
+      "noveltyFactor": 1.0,
+      "customInstructionBugFactor": 0.15,
+      "hardwiredBugFactor": 1.2,
+      "weeklySkill": 8,
+      "coverageScaleWeeks": 400,
+      "rangeSigma": 1.0,
+      "severityCosmeticShare": 0.6,
+      "severityErrataShare": 0.3,
+      "microcodeErrataFixShare": 0.5,
+      "tapeoutToolCost": 50000,
+      "tapeoutEngineeringCost": 25000,
+      "coverageWarning": 0.8,
+      "fullCoverageThreshold": 0.999
+    },
+    "respinWeeks": 10,
+    "coolingCostPerUnit": {
+      "none": 0,
+      "heatsink": 1.5,
+      "fan": 6
+    }
+  }
+}

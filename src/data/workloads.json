@@ -1,0 +1,458 @@
+[
+  {
+    "id": "calculator-math",
+    "name": "Calculator math",
+    "description": "Decimal arithmetic kernels from a 1970s pocket calculator workload.",
+    "era": [
+      1971,
+      1985
+    ],
+    "kind": "kernel",
+    "workUnit": "iteration",
+    "opsPerUnit": {
+      "intAlu": 40,
+      "intMul": 2,
+      "intDiv": 1,
+      "shift": 2,
+      "bcd": 18,
+      "fpAdd": 0,
+      "fpMul": 0,
+      "fpDiv": 0,
+      "fpSqrt": 0,
+      "load": 12,
+      "store": 6,
+      "branch": 4,
+      "simd": 0
+    },
+    "operandBits": 8,
+    "patterns": {
+      "bcd-add-adjust": 0.35,
+      "table-lookup": 0.05
+    },
+    "branchPredictability": 0.85,
+    "ilpMax": 1,
+    "ilpScale": 0.8,
+    "depProb": 0.55,
+    "footprintKB": {
+      "instr": 2,
+      "data": 1
+    },
+    "memBytesPerOp": 2,
+    "parallelFraction": 0,
+    "maxThreads": 1,
+    "variance": 0.05,
+    "source": "builtin"
+  },
+  {
+    "id": "business-ledger",
+    "name": "Business ledger",
+    "description": "16-bit fixed-point bookkeeping with heavy BCD and table access.",
+    "era": [
+      1974,
+      1988
+    ],
+    "kind": "app",
+    "workUnit": "job",
+    "opsPerUnit": {
+      "intAlu": 60,
+      "intMul": 4,
+      "intDiv": 2,
+      "shift": 3,
+      "bcd": 25,
+      "fpAdd": 0,
+      "fpMul": 0,
+      "fpDiv": 0,
+      "fpSqrt": 0,
+      "load": 30,
+      "store": 25,
+      "branch": 8,
+      "simd": 0
+    },
+    "operandBits": 16,
+    "patterns": {
+      "bcd-add-adjust": 0.3,
+      "table-lookup": 0.05,
+      "block-move": 0.05
+    },
+    "branchPredictability": 0.8,
+    "ilpMax": 1.1,
+    "ilpScale": 0.8,
+    "depProb": 0.5,
+    "footprintKB": {
+      "instr": 64,
+      "data": 32
+    },
+    "memBytesPerOp": 4,
+    "parallelFraction": 0,
+    "maxThreads": 1,
+    "variance": 0.1,
+    "source": "builtin"
+  },
+  {
+    "id": "text-editor",
+    "name": "Text editor",
+    "description": "Byte-oriented editing with branchy search and block operations.",
+    "era": [
+      1975,
+      1990
+    ],
+    "kind": "app",
+    "workUnit": "job",
+    "opsPerUnit": {
+      "intAlu": 30,
+      "intMul": 1,
+      "intDiv": 1,
+      "shift": 8,
+      "bcd": 2,
+      "fpAdd": 0,
+      "fpMul": 0,
+      "fpDiv": 0,
+      "fpSqrt": 0,
+      "load": 60,
+      "store": 40,
+      "branch": 25,
+      "simd": 0
+    },
+    "operandBits": 8,
+    "patterns": {
+      "block-move": 0.15,
+      "block-compare": 0.1,
+      "table-lookup": 0.05,
+      "bit-count": 0.05
+    },
+    "branchPredictability": 0.65,
+    "ilpMax": 1.2,
+    "ilpScale": 0.9,
+    "depProb": 0.45,
+    "footprintKB": {
+      "instr": 128,
+      "data": 16
+    },
+    "memBytesPerOp": 1,
+    "parallelFraction": 0,
+    "maxThreads": 1,
+    "variance": 0.1,
+    "source": "builtin"
+  },
+  {
+    "id": "terminal-io",
+    "name": "Terminal / I/O controller",
+    "description": "Interrupt-heavy serial handling; spends most time waiting on the outside world.",
+    "era": [
+      1971,
+      1986
+    ],
+    "kind": "app",
+    "workUnit": "job",
+    "opsPerUnit": {
+      "intAlu": 20,
+      "intMul": 0,
+      "intDiv": 0,
+      "shift": 6,
+      "bcd": 4,
+      "fpAdd": 0,
+      "fpMul": 0,
+      "fpDiv": 0,
+      "fpSqrt": 0,
+      "load": 45,
+      "store": 30,
+      "branch": 30,
+      "simd": 0
+    },
+    "operandBits": 8,
+    "patterns": {
+      "block-move": 0.1,
+      "table-lookup": 0.05,
+      "loop-decrement-branch": 0.1
+    },
+    "branchPredictability": 0.8,
+    "ilpMax": 1,
+    "ilpScale": 0.8,
+    "depProb": 0.5,
+    "footprintKB": {
+      "instr": 16,
+      "data": 8
+    },
+    "memBytesPerOp": 1,
+    "parallelFraction": 0,
+    "maxThreads": 1,
+    "variance": 0.08,
+    "source": "builtin"
+  },
+  {
+    "id": "galaxy-raiders",
+    "name": "Galaxy Raiders",
+    "description": "A 1978-style fixed-screen arcade shooter locked to 60 Hz.",
+    "era": [
+      1978,
+      1986
+    ],
+    "kind": "game",
+    "workUnit": "frame",
+    "opsPerUnit": {
+      "intAlu": 1440,
+      "intMul": 72,
+      "intDiv": 10,
+      "shift": 144,
+      "bcd": 12,
+      "fpAdd": 0,
+      "fpMul": 0,
+      "fpDiv": 0,
+      "fpSqrt": 0,
+      "load": 1080,
+      "store": 600,
+      "branch": 360,
+      "simd": 0
+    },
+    "operandBits": 8,
+    "patterns": {
+      "multiply-accumulate": 0.1,
+      "table-lookup": 0.05,
+      "compare-and-branch": 0.15,
+      "loop-decrement-branch": 0.1,
+      "bit-field-extract": 0.05
+    },
+    "branchPredictability": 0.7,
+    "ilpMax": 1.5,
+    "ilpScale": 1,
+    "depProb": 0.45,
+    "footprintKB": {
+      "instr": 16,
+      "data": 8
+    },
+    "memBytesPerOp": 2,
+    "parallelFraction": 0,
+    "maxThreads": 1,
+    "frameCapHz": 60,
+    "variance": 0.25,
+    "source": "builtin"
+  },
+  {
+    "id": "dungeon-quest",
+    "name": "Dungeon Quest",
+    "description": "A 1983-style home-computer adventure with tile maps and sprite updates.",
+    "era": [
+      1983,
+      1990
+    ],
+    "kind": "game",
+    "workUnit": "frame",
+    "opsPerUnit": {
+      "intAlu": 45000,
+      "intMul": 2500,
+      "intDiv": 400,
+      "shift": 3000,
+      "bcd": 200,
+      "fpAdd": 0,
+      "fpMul": 0,
+      "fpDiv": 0,
+      "fpSqrt": 0,
+      "load": 32000,
+      "store": 18000,
+      "branch": 12000,
+      "simd": 0
+    },
+    "operandBits": 8,
+    "patterns": {
+      "table-lookup": 0.08,
+      "multiply-accumulate": 0.08,
+      "block-move": 0.06,
+      "compare-and-branch": 0.1
+    },
+    "branchPredictability": 0.65,
+    "ilpMax": 1.8,
+    "ilpScale": 1,
+    "depProb": 0.4,
+    "footprintKB": {
+      "instr": 48,
+      "data": 32
+    },
+    "memBytesPerOp": 2,
+    "parallelFraction": 0,
+    "maxThreads": 1,
+    "frameCapHz": 60,
+    "variance": 0.3,
+    "source": "builtin"
+  },
+  {
+    "id": "spreadsheet",
+    "name": "Spreadsheet recalculation",
+    "description": "Recalculating a large sheet: integer and BCD arithmetic over scattered cells.",
+    "era": [
+      1979,
+      1990
+    ],
+    "kind": "app",
+    "workUnit": "job",
+    "opsPerUnit": {
+      "intAlu": 2000000,
+      "intMul": 120000,
+      "intDiv": 20000,
+      "shift": 50000,
+      "bcd": 300000,
+      "fpAdd": 100000,
+      "fpMul": 60000,
+      "fpDiv": 10000,
+      "fpSqrt": 5000,
+      "load": 1400000,
+      "store": 700000,
+      "branch": 250000,
+      "simd": 0
+    },
+    "operandBits": 16,
+    "patterns": {
+      "bcd-add-adjust": 0.2,
+      "table-lookup": 0.05,
+      "block-move": 0.05
+    },
+    "branchPredictability": 0.8,
+    "ilpMax": 1.4,
+    "ilpScale": 0.9,
+    "depProb": 0.4,
+    "footprintKB": {
+      "instr": 256,
+      "data": 512
+    },
+    "memBytesPerOp": 4,
+    "parallelFraction": 0,
+    "maxThreads": 1,
+    "variance": 0.15,
+    "source": "builtin"
+  },
+  {
+    "id": "cad-scientific",
+    "name": "CAD / scientific",
+    "description": "Floating-point geometry and simulation; the reason to buy an FPU.",
+    "era": [
+      1982,
+      1990
+    ],
+    "kind": "app",
+    "workUnit": "job",
+    "opsPerUnit": {
+      "intAlu": 3000000,
+      "intMul": 200000,
+      "intDiv": 50000,
+      "shift": 100000,
+      "bcd": 0,
+      "fpAdd": 2200000,
+      "fpMul": 1800000,
+      "fpDiv": 300000,
+      "fpSqrt": 120000,
+      "load": 2500000,
+      "store": 1500000,
+      "branch": 500000,
+      "simd": 0
+    },
+    "operandBits": 32,
+    "patterns": {
+      "fixed-point-multiply": 0.05,
+      "table-lookup": 0.03,
+      "integer-sqrt": 0.02
+    },
+    "branchPredictability": 0.75,
+    "ilpMax": 2.2,
+    "ilpScale": 1.1,
+    "depProb": 0.35,
+    "footprintKB": {
+      "instr": 1024,
+      "data": 2048
+    },
+    "memBytesPerOp": 8,
+    "parallelFraction": 0,
+    "maxThreads": 1,
+    "variance": 0.2,
+    "source": "builtin"
+  },
+  {
+    "id": "compiler-build",
+    "name": "Compiler build",
+    "description": "Branchy, pointer-chasing compilation of a large program.",
+    "era": [
+      1980,
+      1990
+    ],
+    "kind": "app",
+    "workUnit": "job",
+    "opsPerUnit": {
+      "intAlu": 6000000,
+      "intMul": 300000,
+      "intDiv": 40000,
+      "shift": 900000,
+      "bcd": 0,
+      "fpAdd": 0,
+      "fpMul": 0,
+      "fpDiv": 0,
+      "fpSqrt": 0,
+      "load": 4000000,
+      "store": 2000000,
+      "branch": 1600000,
+      "simd": 0
+    },
+    "operandBits": 32,
+    "patterns": {
+      "block-move": 0.08,
+      "block-compare": 0.06,
+      "bit-count": 0.05,
+      "table-lookup": 0.04
+    },
+    "branchPredictability": 0.7,
+    "ilpMax": 2,
+    "ilpScale": 1,
+    "depProb": 0.38,
+    "footprintKB": {
+      "instr": 4096,
+      "data": 2048
+    },
+    "memBytesPerOp": 4,
+    "parallelFraction": 0,
+    "maxThreads": 1,
+    "variance": 0.15,
+    "source": "builtin"
+  },
+  {
+    "id": "multiuser-timesharing",
+    "name": "Multi-user time-sharing",
+    "description": "Many interactive users on one machine; needs memory protection and an MMU.",
+    "era": [
+      1982,
+      1990
+    ],
+    "kind": "app",
+    "workUnit": "job",
+    "opsPerUnit": {
+      "intAlu": 4000000,
+      "intMul": 150000,
+      "intDiv": 30000,
+      "shift": 200000,
+      "bcd": 50000,
+      "fpAdd": 0,
+      "fpMul": 0,
+      "fpDiv": 0,
+      "fpSqrt": 0,
+      "load": 3000000,
+      "store": 2000000,
+      "branch": 1200000,
+      "simd": 0
+    },
+    "operandBits": 16,
+    "patterns": {
+      "block-move": 0.05,
+      "loop-decrement-branch": 0.05,
+      "compare-and-branch": 0.05
+    },
+    "branchPredictability": 0.65,
+    "ilpMax": 1.2,
+    "ilpScale": 0.9,
+    "depProb": 0.42,
+    "footprintKB": {
+      "instr": 2048,
+      "data": 1024
+    },
+    "memBytesPerOp": 4,
+    "parallelFraction": 0.4,
+    "maxThreads": 16,
+    "variance": 0.2,
+    "source": "builtin"
+  }
+]
